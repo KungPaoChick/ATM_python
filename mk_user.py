@@ -1,5 +1,4 @@
-import colorama, fast_luhn as fl
-from string import punctuation
+import colorama, string, fast_luhn as fl
 import db_connect
 
 class User:
@@ -9,16 +8,17 @@ class User:
         self.pin = pin
 
 
-    def submit_user(self, name, pin):
-        db_connect.insertData(db_connect.connect_db(), name)
+    def submit_user(self):
+        sql = '''INSERT INTO users (Name) VALUES(%s)'''
+        db_connect.insertData(db_connect.connect_db(), self.name, sql)
 
-        
+
 def name_user():
     fname = input('Please enter first name: ')
     lname = input('Please enter last name: ')
     name = f'{fname} {lname}'
     for letter in name:
-        for char in punctuation:
+        for char in string.punctuation:
             if letter == char:
                 print(colorama.Fore.RED,
                     '[!!] No Special Characters, please', colorama.Style.RESET_ALL)
@@ -37,6 +37,25 @@ def name_user():
         return name
 
 
+def pin_user():
+    print(colorama.Fore.YELLOW,
+        'PIN should be at a length of 4 numbers', colorama.Style.RESET_ALL)
+
+    pin = int(input('Enter new PIN: '))
+    chk_pin = int(input('Enter PIN again: '))
+    if pin != chk_pin:
+        print(colorama.Fore.RED,
+            '[!!] PIN code does not match. Try again', colorama.Style.RESET_ALL)
+    elif not len(str(pin)) == 6 or not len(str(chk_pin)) == 6:
+        print(colorama.Fore.RED,
+            '[!!] PIN code is not in the length of 4. Try again', colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN,
+            '[*] PIN code has been successfully recorded', colorama.Style.RESET_ALL)
+        return pin
+
+
 if __name__ == '__main__':
     colorama.init()
-    print(name_user())
+    name_user()
+    pin_user()
