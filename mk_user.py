@@ -33,26 +33,27 @@ def name_user():
         quit()
     else:
         print(colorama.Fore.GREEN,
-            f'[*] {name} has been successfully recorded', colorama.Style.RESET_ALL)
+            f'[*] {name} has been successfully recorded\n\n', colorama.Style.RESET_ALL)
         return name
 
 
 def pin_user():
     print(colorama.Fore.YELLOW,
-        'PIN should be at a length of 4 numbers', colorama.Style.RESET_ALL)
+        'PIN should be at a length of 6 numbers', colorama.Style.RESET_ALL)
 
-    pin = int(input('Enter new PIN: '))
-    chk_pin = int(input('Enter PIN again: '))
-    if pin != chk_pin:
-        print(colorama.Fore.RED,
-            '[!!] PIN code does not match. Try again', colorama.Style.RESET_ALL)
-    elif not len(str(pin)) == 6 or not len(str(chk_pin)) == 6:
-        print(colorama.Fore.RED,
-            '[!!] PIN code is not in the length of 4. Try again', colorama.Style.RESET_ALL)
-    else:
-        print(colorama.Fore.GREEN,
-            '[*] PIN code has been successfully recorded', colorama.Style.RESET_ALL)
-        return pin
+    while True:
+        pin = int(input('Enter new PIN: '))
+        chk_pin = int(input('Enter PIN again: '))
+        if pin != chk_pin:
+            print(colorama.Fore.RED,
+                '[!!] PIN code does not match. Try again', colorama.Style.RESET_ALL)
+        elif not len(str(pin)) == 6 or not len(str(chk_pin)) == 6:
+            print(colorama.Fore.RED,
+                '[!!] PIN code does not match with the length of 6. Try again', colorama.Style.RESET_ALL)
+        else:
+            print(colorama.Fore.GREEN,
+                '[*] PIN code has been successfully recorded', colorama.Style.RESET_ALL)
+            return pin
 
 
 if __name__ == '__main__':
