@@ -12,7 +12,7 @@ class User:
     def submit_user(self, name, pin):
         db_connect.insertData(db_connect.connect_db(), name)
 
-
+        
 def name_user():
     fname = input('Please enter first name: ')
     lname = input('Please enter last name: ')
