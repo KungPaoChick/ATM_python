@@ -68,15 +68,12 @@ def check_table(cursor):
             '\n[!!] An Error has occured!', err, colorama.Style.RESET_ALL)
 
 
-def insertData(connection, values):
+def insertData(connection, values, execution):
     myCursor = connection.cursor()
-    sql = '''INSERT INTO
-            users (Card_Number, Name, Address, Country, CVV, EXP)
-            VALUES (%s,%s,%s,%s,%s,%s)'''
-
     val = [tuple(values)]
+
     try:
-        myCursor.executemany(sql, val)
+        myCursor.executemany(execution, val)
         myCursor.execute('SELECT * FROM users')
         myCursor.fetchall()
         connection.commit()
