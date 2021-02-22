@@ -3,9 +3,10 @@ import db_connect, getpass, random
 
 class User:
 
-    def __init__(self, account_number, card_number, name, pin):
+    def __init__(self, account_number, card_number, cvv, name, pin):
         self.account_number = account_number
         self.card_number = card_number
+        self.cvv = cvv
         self.name = name
         self.pin = pin
 
@@ -13,13 +14,14 @@ class User:
     def myfunc(self):
         print(f'Account Number: {self.account_number}')
         print(f'Card Number: {self.card_number}')
+        print(f'CVV: {self.cvv}')
         print(f'Name: {self.name}')
         print(f'PIN: {self.pin}')
 
 
     def submit_user(self):
-        sql = '''INSERT INTO users (Account_Number, Card_Number, Name, PIN) VALUES(%s, %s, %s, %s)'''
-        info = [self.card_number, self.name, self.pin]
+        sql = '''INSERT INTO users (Account_Number, Card_Number, CVV, Name, PIN) VALUES(%s,%s,%s,%s,%s)'''
+        info = [self.account_number, self.card_number, self.cvv, self.name, self.pin]
         db_connect.insertData(db_connect.connect_db(), info, sql)
 
 
@@ -73,9 +75,12 @@ def pin_user():
 
 
 def account_number_user():
-    acc_num = random.randint(100000000,999999999)
-    if len(str(acc_num)) == 9:
-        return acc_num
+    while True:
+        acc_num = random.randint(100000000,999999999)
+        if not len(str(acc_num)) == 9:
+            continue
+        else:
+            return acc_num
 
 
 def card_number_user():
@@ -84,9 +89,19 @@ def card_number_user():
         return card
 
 
+def generate_cvv():
+    while True:
+        cvv = random.randint(100, 999)
+        if not len(str(cvv)) == 3:
+            continue
+        else:
+            return cvv
+
+
 if __name__ == '__main__':
     colorama.init()
     User(account_number_user(),
          card_number_user(),
+         generate_cvv(),
          name_user(),
          pin_user()).myfunc()
