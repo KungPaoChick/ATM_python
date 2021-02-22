@@ -20,7 +20,9 @@ class User:
 
 
     def submit_user(self):
-        sql = '''INSERT INTO users (Account_Number, Card_Number, CVV, Name, PIN) VALUES(%s,%s,%s,%s,%s)'''
+        sql = '''INSERT INTO users 
+                    (Account_Number, Card_Number, CVV, Name, PIN) 
+                    VALUES(%s,%s,%s,%s,%s)'''
         info = [self.account_number, self.card_number, self.cvv, self.name, self.pin]
         db_connect.insertData(db_connect.connect_db(), info, sql)
 
@@ -104,4 +106,4 @@ if __name__ == '__main__':
          card_number_user(),
          generate_cvv(),
          name_user(),
-         pin_user()).myfunc()
+         pin_user()).submit_user()
