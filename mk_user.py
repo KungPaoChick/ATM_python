@@ -28,20 +28,21 @@ def name_user():
         fname = input('Please enter first name: ')
         lname = input('Please enter last name: ')
         name = f'{fname} {lname}'
+        
         for letter in name:
-            for char in string.punctuation:
-                if letter == char:
-                    print(colorama.Fore.RED,
-                        '[!!] No Special Characters, please', colorama.Style.RESET_ALL)
-                    quit()
+            if letter in [char for char in string.punctuation]:
+                print(colorama.Fore.RED,
+                    '[!!] No Special Characters, please\n', colorama.Style.RESET_ALL)
+            elif letter in [num for num in string.digits]:
+                print(colorama.Fore.RED,
+                    '[!!] No numbers, please\n', colorama.Style.RESET_ALL)
+
         if len(name) <= 3:
             print(colorama.Fore.RED,
-                '[!!] Enter a valid name', colorama.Style.RESET_ALL)
-            quit()
+                '[!!] Enter a valid name\n', colorama.Style.RESET_ALL)
         elif len(name) >= 30:
             print(colorama.Fore.RED,
-                '[!!] Name Exceeded in length', colorama.Style.RESET_ALL)
-            quit()
+                '[!!] Name Exceeded in length\n', colorama.Style.RESET_ALL)
 
         chk_name = str(input(f'{name} is your name?(y/n) '))
         if chk_name == 'y' or chk_name == 'yes':
@@ -57,8 +58,8 @@ def pin_user():
         'PIN should be at a length of 6 numbers', colorama.Style.RESET_ALL)
 
     while True:
-        pin = int(getpass.getpass('Enter new PIN: '))
-        chk_pin = int(getpass.getpass('Enter PIN again: '))
+        pin = getpass.getpass('Enter new PIN: ')
+        chk_pin = getpass.getpass('Enter PIN again: ')
         if pin != chk_pin:
             print(colorama.Fore.RED,
                 '[!!] PIN code does not match. Try again', colorama.Style.RESET_ALL)
