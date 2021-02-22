@@ -1,22 +1,24 @@
 import colorama, string, fast_luhn as fl
-import db_connect, getpass
+import db_connect, getpass, random
 
 class User:
 
-    def __init__(self, card_number, name, pin):
+    def __init__(self, account_number, card_number, name, pin):
+        self.account_number = account_number
         self.card_number = card_number
         self.name = name
         self.pin = pin
 
 
     def myfunc(self):
+        print(f'Account Number: {self.account_number}')
         print(f'Card Number: {self.card_number}')
         print(f'Name: {self.name}')
         print(f'PIN: {self.pin}')
 
 
     def submit_user(self):
-        sql = '''INSERT INTO users (Card_Number, Name, PIN) VALUES(%s, %s, %s)'''
+        sql = '''INSERT INTO users (Account_Number, Card_Number, Name, PIN) VALUES(%s, %s, %s, %s)'''
         info = [self.card_number, self.name, self.pin]
         db_connect.insertData(db_connect.connect_db(), info, sql)
 
@@ -69,14 +71,21 @@ def pin_user():
             return pin
 
 
+def account_number_user():
+    acc_num = random.randint(100000000,999999999)
+    if len(str(acc_num)) == 9:
+        return acc_num
+
+
 def card_number_user():
     card = fl.generate(16)
-    if fl.validate(card):
+    if fl.validate(card) and len(str(card)) == 16:
         return card
 
 
 if __name__ == '__main__':
     colorama.init()
-    User(card_number_user(),
+    User(account_number_user(),
+         card_number_user(),
          name_user(),
          pin_user()).myfunc()
