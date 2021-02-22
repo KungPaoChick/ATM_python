@@ -54,10 +54,11 @@ def check_table(cursor):
     try:
         cursor.execute(
             '''CREATE TABLE IF NOT EXISTS users(
+                `Account_Number` VARCHAR(9) NOT NULL,
                 `Card_Number` VARCHAR(16) NOT NULL,
                 `Name` VARCHAR(50) NOT NULL,
                 `PIN` INT(6) NOT NULL,
-                PRIMARY KEY (`Card_Number`));''')
+                PRIMARY KEY (`Account_Number`));''')
         print(colorama.Fore.GREEN,
             '\n[*] Successfully Created Table: users', colorama.Style.RESET_ALL)
     except connectSQL.Error as err:
