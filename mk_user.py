@@ -45,7 +45,7 @@ def name_user():
         if chk_name == 'y' or chk_name == 'yes':
             print(colorama.Fore.GREEN,
                 f'[*] {name} has been successfully recorded\n\n', colorama.Style.RESET_ALL)
-            return values.append(name)
+            return name
         else:
             print(colorama.Fore.RED, '[!!] Abort!', colorama.Style.RESET_ALL)
 
@@ -66,20 +66,17 @@ def pin_user():
         else:
             print(colorama.Fore.GREEN,
                 '[*] PIN code has been successfully recorded', colorama.Style.RESET_ALL)
-            return values.append(pin)
+            return pin
 
 
 def card_number_user():
     card = fl.generate(16)
     if fl.validate(card):
-        values.append(card)
         return card
 
 
 if __name__ == '__main__':
     colorama.init()
-    values = []
-    card_number_user()
-    name_user()
-    pin_user()
-    User(values[0], values[1], values[2]).myfunc()
+    User(card_number_user(),
+         name_user(),
+         pin_user()).myfunc()
