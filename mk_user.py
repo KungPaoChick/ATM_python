@@ -3,14 +3,21 @@ import db_connect, getpass
 
 class User:
 
-    def __init__(self, name, pin):
+    def __init__(self, card_number, name, pin):
+        self.card_number = card_number
         self.name = name
         self.pin = pin
 
 
+    def myfunc(self):
+        print(f'Card Number: {self.card_number}')
+        print(f'Name: {self.name}')
+        print(f'PIN: {self.pin}')
+
+
     def submit_user(self):
-        sql = '''INSERT INTO users (Name, PIN) VALUES(%s, %s)'''
-        info = [self.name, self.pin]
+        sql = '''INSERT INTO users (Card_Number, Name, PIN) VALUES(%s, %s, %s)'''
+        info = [self.card_number, self.name, self.pin]
         db_connect.insertData(db_connect.connect_db(), info, sql)
 
 
@@ -62,9 +69,17 @@ def pin_user():
             return values.append(pin)
 
 
+def card_number_user():
+    card = fl.generate(16)
+    if fl.validate(card):
+        values.append(card)
+        return card
+
+
 if __name__ == '__main__':
     colorama.init()
     values = []
+    card_number_user()
     name_user()
     pin_user()
-    User(values[0], values[1]).submit_user()
+    User(values[0], values[1], values[2]).myfunc()
