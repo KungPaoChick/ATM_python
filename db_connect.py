@@ -56,6 +56,7 @@ def check_table(cursor):
             '''CREATE TABLE IF NOT EXISTS users(
                 `Account_Number` VARCHAR(9) NOT NULL,
                 `Card_Number` VARCHAR(16) NOT NULL,
+                `CVV` INT(3) NOT NULL,
                 `Name` VARCHAR(50) NOT NULL,
                 `PIN` INT(6) NOT NULL,
                 PRIMARY KEY (`Account_Number`));''')
