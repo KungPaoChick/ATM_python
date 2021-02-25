@@ -11,12 +11,12 @@ class User:
         self.pin = pin
 
 
-    def myfunc(self):
-        print(f'Account Number: {self.account_number}')
-        print(f'Card Number: {self.card_number}')
-        print(f'CVV: {self.cvv}')
-        print(f'Name: {self.name}')
-        print(f'PIN: {self.pin}')
+    #def myfunc(self):
+    #    print(f'Account Number: {self.account_number}')
+    #    print(f'Card Number: {self.card_number}')
+    #    print(f'CVV: {self.cvv}')
+    #    print(f'Name: {self.name}')
+    #    print(f'PIN: {self.pin}')
 
 
     def submit_user(self):
@@ -106,4 +106,4 @@ if __name__ == '__main__':
          card_number_user(),
          generate_cvv(),
          name_user(),
-         pin_user()).myfunc()
+         pin_user()).submit_user()
