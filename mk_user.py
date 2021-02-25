@@ -106,4 +106,4 @@ if __name__ == '__main__':
          card_number_user(),
          generate_cvv(),
          name_user(),
-         pin_user()).submit_user()
+         pin_user()).myfunc()

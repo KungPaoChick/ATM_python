@@ -25,17 +25,6 @@ def connect_db():
     return mySQL
 
 
-def check_connection():
-    if connect_db():
-        print(colorama.Fore.GREEN,
-            '\n[*] Connection to Database is Successful!\n',
-            colorama.Style.RESET_ALL)
-    else:
-        print(colorama.Fore.RED,
-            '\n[!!] Connection to Database is Unsuccessful\n',
-            colorama.Style.RESET_ALL)
-
-
 @run_once
 def check_database(cursor):
     try:
@@ -67,16 +56,15 @@ def check_table(cursor):
             '\n[!!] An Error has occured!', err, colorama.Style.RESET_ALL)
 
 
-def insertData(connection, values, execution):
-    myCursor = connection.cursor()
+def insertData(cursor, values, execution):
     val = [tuple(values)]
 
     try:
-        myCursor.executemany(execution, val)
-        myCursor.execute('SELECT * FROM users')
-        myCursor.fetchall()
-        connection.commit()
-        print(colorama.Fore.YELLOW, myCursor.rowcount,
+        cursor.executemany(execution, val)
+        cursor.execute('SELECT * FROM users')
+        cursor.fetchall()
+        cursor.commit()
+        print(colorama.Fore.YELLOW, cursor.rowcount,
             'was inserted', colorama.Style.RESET_ALL)
     except connectSQL.Error as err:
         print(colorama.Fore.RED,
