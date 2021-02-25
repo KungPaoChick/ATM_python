@@ -56,14 +56,15 @@ def check_table(cursor):
             '\n[!!] An Error has occured!', err, colorama.Style.RESET_ALL)
 
 
-def insertData(cursor, values, execution):
+def insertData(connection, values, execution):
     val = [tuple(values)]
+    cursor = connection.cursor()
 
     try:
         cursor.executemany(execution, val)
         cursor.execute('SELECT * FROM users')
         cursor.fetchall()
-        cursor.commit()
+        connection.commit()
         print(colorama.Fore.YELLOW, cursor.rowcount,
             'was inserted', colorama.Style.RESET_ALL)
     except connectSQL.Error as err:
