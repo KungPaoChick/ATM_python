@@ -91,7 +91,7 @@ def card_number_user():
         return card
 
 
-def generate_cvv():
+def cvv_user():
     while True:
         cvv = random.randint(100, 999)
         if not len(str(cvv)) == 3:
@@ -104,6 +104,6 @@ if __name__ == '__main__':
     colorama.init()
     User(account_number_user(),
          card_number_user(),
-         generate_cvv(),
+         cvv_user(),
          name_user(),
          pin_user()).submit_user()
