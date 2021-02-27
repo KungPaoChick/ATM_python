@@ -18,7 +18,8 @@ def connect_db():
         password=''
     )
     myCursor = mySQL.cursor()
-    
+    myCursor.execute('USE ATM')
+
     run_once(check_database(myCursor))
     run_once(check_table(myCursor))
     return mySQL
