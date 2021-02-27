@@ -21,7 +21,6 @@ def connect_db():
     
     run_once(check_database(myCursor))
     run_once(check_table(myCursor))
-    myCursor.execute('USE ATM')
     return mySQL
 
 
@@ -30,9 +29,13 @@ def check_database(cursor):
     try:
         cursor.execute(
             'CREATE DATABASE IF NOT EXISTS ATM')
-        cursor.execute('USE ATM')
-        print(colorama.Fore.GREEN,
-            '\n[*] Successfully Created Database: ATM', colorama.Style.RESET_ALL)
+        result = cursor.with_rows
+        if result:
+            cursor.execute('USE ATM')
+            print(colorama.Fore.GREEN,
+                '\n[*] Successfully Created Database: ATM', colorama.Style.RESET_ALL)
+        else:
+            cursor.execute('USE ATM')
     except connectSQL.Error as err:
         print(colorama.Fore.RED,
             '\n[!!] An Error has occured!', err, colorama.Style.RESET_ALL)
@@ -49,8 +52,12 @@ def check_table(cursor):
                 `Name` VARCHAR(50) NOT NULL,
                 `PIN` INT(6) NOT NULL,
                 PRIMARY KEY (`Account_Number`));''')
-        print(colorama.Fore.GREEN,
-            '\n[*] Successfully Created Table: users', colorama.Style.RESET_ALL)
+        result = cursor.with_rows
+        if result:
+            print(colorama.Fore.GREEN,
+                '\n[*] Successfully Created Table: users', colorama.Style.RESET_ALL)
+        else:
+            pass
     except connectSQL.Error as err:
         print(colorama.Fore.RED,
             '\n[!!] An Error has occured!', err, colorama.Style.RESET_ALL)
