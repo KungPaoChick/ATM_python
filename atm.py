@@ -5,9 +5,18 @@ import colorama, getpass, fast_luhn as fl
 #TODO: develop the damn atm
 class ATM:
 
-    def login(self, card_number, pin):
-        print(colorama.Fore.GREEN,
-            '[*] Welcome!', colorama.Style.RESET_ALL)
+    def __init__(self, card_number, pin):
+        self.card_number = card_number
+        self.pin = pin
+
+
+    def login(self):
+        cursor.execute(f'SELECT Name FROM users WHERE Card_Number={self.card_number}')
+        results = cursor.fetchone()
+        
+        for result in results:
+            print(colorama.Fore.GREEN,
+                f'[*] Welcome, {result}!', colorama.Style.RESET_ALL)
 
 
 if __name__ == '__main__':
@@ -44,4 +53,4 @@ if __name__ == '__main__':
                         '[!!] Your PIN code is incorrect\n', colorama.Style.RESET_ALL)
                 elif code in creds:
                     temp = False
-                    ATM().login(card, code)
+                    ATM(card, code).login()
