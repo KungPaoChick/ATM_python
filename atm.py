@@ -13,9 +13,8 @@ class ATM:
 
     def login(self):
         cursor.execute(f'SELECT Name FROM users WHERE Card_Number={self.card_number}')
-        results = cursor.fetchone()
         
-        for result in results:
+        for result in cursor.fetchone():
             print(colorama.Fore.GREEN,
                 f'[*] Welcome, {result}!', colorama.Style.RESET_ALL)
             options(self.card_number, self.pin)
