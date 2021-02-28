@@ -1,5 +1,6 @@
 import db_connect, mysql.connector as connectSQL
 import colorama, getpass, fast_luhn as fl
+import actions
 
 
 #TODO: develop the damn atm
@@ -33,8 +34,11 @@ def options(card, pin):
             print(options[option])
 
         selection = int(input('Enter digit to choose: '))
+        data = []
 
         if selection in options:
+            print('\n\n\n')
+            data.extend((selection, cursor))
             if selection == 4:
                 cursor.execute(f'SELECT Name FROM users WHERE Card_Number={card}')
                 results = cursor.fetchone()
@@ -42,8 +46,8 @@ def options(card, pin):
                     print(colorama.Fore.GREEN,
                     f'\n[*] Goodbye, {result}. And Thank you!\n', colorama.Style.RESET_ALL)
                     quit()
-        return selection
-        
+        actions.action(data)
+
 
 if __name__ == '__main__':
     colorama.init()
