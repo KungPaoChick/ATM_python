@@ -29,6 +29,7 @@ def options(card, pin):
     }
 
     while True:
+        print('\n\n\n')
         for option in options:
             print(options[option])
 
@@ -37,7 +38,7 @@ def options(card, pin):
 
         if selection in options:
             print('\n\n\n')
-            data.extend((selection, cursor))
+            data.extend((selection, cursor, mysql))
             if selection == 4:
                 cursor.execute(f'SELECT Name FROM users WHERE Card_Number={card}')
                 results = cursor.fetchone()
