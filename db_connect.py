@@ -18,10 +18,10 @@ def connect_db():
         password=''
     )
     myCursor = mySQL.cursor()
-    myCursor.execute('USE ATM')
 
     run_once(check_database(myCursor))
     run_once(check_table(myCursor))
+    myCursor.execute('USE ATM')
     return mySQL
 
 
@@ -52,6 +52,7 @@ def check_table(cursor):
                 `CVV` INT(3) NOT NULL,
                 `Name` VARCHAR(50) NOT NULL,
                 `PIN` INT(6) NOT NULL,
+                `Balance` INT(9),
                 PRIMARY KEY (`Account_Number`));''')
         result = cursor.with_rows
         if result:

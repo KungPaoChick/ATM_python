@@ -21,9 +21,9 @@ class User:
 
     def submit_user(self):
         sql = '''INSERT INTO users 
-                    (Account_Number, Card_Number, CVV, Name, PIN) 
-                    VALUES(%s,%s,%s,%s,%s)'''
-        info = [self.account_number, self.card_number, self.cvv, self.name, self.pin]
+                    (Account_Number, Card_Number, CVV, Name, PIN, Balance)
+                    VALUES(%s,%s,%s,%s,%s,%s)'''
+        info = [self.account_number, self.card_number, self.cvv, self.name, self.pin, 0]
         db_connect.insertData(db_connect.connect_db(), info, sql)
 
 
@@ -31,7 +31,7 @@ def name_user():
     while True:
         fname = input('Please enter first name: ')
         lname = input('Please enter last name: ')
-        name = f'{fname} {lname}'
+        name = f'{fname.capitalize()} {lname.capitalize()}'
         
         for letter in name:
             if letter in [char for char in string.punctuation]:

@@ -17,7 +17,33 @@ class ATM:
         for result in results:
             print(colorama.Fore.GREEN,
                 f'[*] Welcome, {result}!', colorama.Style.RESET_ALL)
+            options(self.card_number, self.pin)
 
+
+def options(card, pin):
+    options = {
+        1 : '1. Check Balance',
+        2 : '2. Withdraw',
+        3 : '3. Deposit',
+        4 : '4. Exit'
+    }
+
+    while True:
+        for option in options:
+            print(options[option])
+
+        selection = int(input('Enter digit to choose: '))
+
+        if selection in options:
+            if selection == 4:
+                cursor.execute(f'SELECT Name FROM users WHERE Card_Number={card}')
+                results = cursor.fetchone()
+                for result in results:
+                    print(colorama.Fore.GREEN,
+                    f'\n[*] Goodbye, {result}. And Thank you!\n', colorama.Style.RESET_ALL)
+                    quit()
+        return selection
+        
 
 if __name__ == '__main__':
     colorama.init()
