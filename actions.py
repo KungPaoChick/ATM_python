@@ -4,11 +4,11 @@ import colorama
 
 class my_actions:
 
-    def Check_Balance(self, cursor):
-        pin = int(getpass('Please Enter PIN code again to confirm: '))
+    def Check_Balance(self, cursor, pin):
+        conf = int(getpass('Please Enter PIN code again to confirm: '))
 
-        if my_actions().confirm_pin(pin, cursor):
-            cursor.execute(f'SELECT Balance FROM users WHERE PIN={pin}')
+        if my_actions().confirm_pin(conf, pin):
+            cursor.execute(f'SELECT Balance FROM users WHERE PIN={conf}')
             balance = cursor.fetchone()
             for x in balance:
                 print(colorama.Fore.YELLOW,
@@ -17,62 +17,70 @@ class my_actions:
                     print('you gotta get a job, mate')
 
 
-    def Withdraw(self, amount, cursor, sql):
-        pin = int(getpass('Please Enter PIN code again to confirm: '))
+    def Withdraw(self, amount, cursor, sql, pin):
+        conf = int(getpass('Please Enter PIN code again to confirm: '))
         
-        if my_actions().confirm_pin(pin, cursor):
-            cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={pin}')
+        if my_actions().confirm_pin(conf, pin):
+            cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}')
             for x in cursor.fetchone():
                 if x < amount:
                     print(colorama.Fore.RED,
                         f'[!!] Unable to Withdraw amount. {amount} exceeds your current Balance.',
                         colorama.Style.RESET_ALL)
                 elif x > amount:
-                    cursor.execute(f'UPDATE `users` SET `Balance` = `Balance` - {amount} WHERE `PIN`={pin}')
+                    cursor.execute(f'UPDATE `users` SET `Balance` = `Balance` - {amount} WHERE `PIN`={conf}')
                     sql.commit()
 
-                    cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={pin}')
+                    cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}')
                     for result in cursor.fetchone():
                         print(colorama.Fore.GREEN,
                             f'[*] Successfully Withdrawn amount. Your new Balance is: {result}',
                             colorama.Style.RESET_ALL)
+                elif x == amount:
+                    conf_bankrupt = str(input('Are you sure you want to withdraw all balance?(y/n) '))
+                    if conf_bankrupt == 'y' or conf_bankrupt == 'yes':
+                        cursor.execute(f'UPDATE `users` SET `Balance` = `Balance` - {amount} WHERE `PIN`={conf}')
+                        sql.commit()
+
+                        cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}')
+                        for x in cursor.fetchone():
+                            print(colorama.Fore.GREEN,
+                                f'[*] Successfully Withdrawn all Balance. Your current Balance is now: {x}',
+                                colorama.Style.RESET_ALL)
+                    else:
+                        continue
 
 
-    def Deposit(self, amount, cursor, sql):
-        pin = int(getpass('Please Enter PIN code again to confirm: '))
+    def Deposit(self, amount, cursor, sql, pin):
+        conf = int(getpass('Please Enter PIN code again to confirm: '))
         
-        if my_actions().confirm_pin(pin, cursor):
-                cursor.execute(f'UPDATE `users` SET `Balance` = `Balance` + {amount} WHERE `PIN`={pin}')
+        if my_actions().confirm_pin(conf, pin):
+                cursor.execute(f'UPDATE `users` SET `Balance` = `Balance` + {amount} WHERE `PIN`={conf}')
                 sql.commit()
 
-                cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={pin}') 
+                cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}') 
                 for result in cursor.fetchone():
                     print(colorama.Fore.GREEN,
                         f'[*] Successfully Deposited amount. Your new Balance is: {result}',
                         colorama.Style.RESET_ALL)
 
 
-    def confirm_pin(self, confirm, cursor):
-        cursor.execute(f'SELECT PIN FROM users WHERE PIN={confirm}')
-        for result in cursor.fetchone():
-            if confirm == result:
-                print(colorama.Fore.GREEN,
-                    'Confirmed', colorama.Style.RESET_ALL)
-                return True
-            else:
-                return False
+    def confirm_pin(self, confirm, pin):
+        if confirm == pin:
+            print(colorama.Fore.GREEN,
+                '[*] Confirmed', colorama.Style.RESET_ALL)
+            return True
+        else:
+            print(colorama.Fore.RED,
+                f'[!!] {confirm} is not your PIN code.', colorama.Style.RESET_ALL)
 
 
 def action(my_data):
-    selection = my_data[0]
-    cursor = my_data[1]
-    mysql = my_data[2]
-
-    if selection == 1:
-        my_actions().Check_Balance(cursor)
-    elif selection == 2:
+    if my_data[0] == 1:
+        my_actions().Check_Balance(my_data[1], my_data[3])
+    elif my_data[0] == 2:
         withdraw_amount = int(input('Enter the amount you want to Withdraw: '))
-        my_actions().Withdraw(withdraw_amount, cursor, mysql)
-    elif selection == 3:
+        my_actions().Withdraw(withdraw_amount, my_data[1], my_data[2], my_data[3])
+    elif my_data[0] == 3:
         deposit_amount = int(input('Enter the amount you want to Deposit: '))
-        my_actions().Deposit(deposit_amount, cursor, mysql)
+        my_actions().Deposit(deposit_amount, my_data[1], my_data[2], my_data[3])
