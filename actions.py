@@ -5,19 +5,10 @@ import colorama
 class my_actions:
 
     def Check_Balance(self, cursor):
-        temp = False
-        confirm = int(getpass('Please Enter PIN code again to confirm: '))
-        cursor.execute(f'SELECT PIN FROM users WHERE PIN={confirm}')
-        results = cursor.fetchone()
+        pin = int(getpass('Please Enter PIN code again to confirm: '))
 
-        for result in results:
-            if confirm == result:
-                temp = True
-                print(colorama.Fore.GREEN,
-                    'Confirmed', colorama.Style.RESET_ALL)
-
-        if temp:
-            cursor.execute(f'SELECT Balance FROM users WHERE PIN={confirm}')
+        if my_actions().confirm_pin(pin, cursor):
+            cursor.execute(f'SELECT Balance FROM users WHERE PIN={pin}')
             balance = cursor.fetchone()
             for x in balance:
                 print(colorama.Fore.YELLOW,
@@ -25,12 +16,30 @@ class my_actions:
                 if x == 0:
                     print('you gotta get a job, mate')
 
+
     def Withdraw(self, amount, cursor):
-        pass
+        pin = int(getpass('Please Enter PIN code again to confirm: '))
+        
+        if my_actions().confirm_pin(pin, cursor):
+            print('yeet')
 
 
     def Deposit(self, amount, cursor):
-        pass
+        pin = int(getpass('Please Enter PIN code again to confirm: '))
+        
+        if my_actions().confirm_pin(pin, cursor):
+            print('yeet')
+
+
+    def confirm_pin(self, confirm, cursor):
+        cursor.execute(f'SELECT PIN FROM users WHERE PIN={confirm}')
+        for result in cursor.fetchone():
+            if confirm == result:
+                print(colorama.Fore.GREEN,
+                    'Confirmed', colorama.Style.RESET_ALL)
+                return True
+            else:
+                return False
 
 
 def action(my_data):
