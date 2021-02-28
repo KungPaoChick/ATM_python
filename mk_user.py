@@ -11,14 +11,6 @@ class User:
         self.pin = pin
 
 
-    #def myfunc(self):
-    #    print(f'Account Number: {self.account_number}')
-    #    print(f'Card Number: {self.card_number}')
-    #    print(f'CVV: {self.cvv}')
-    #    print(f'Name: {self.name}')
-    #    print(f'PIN: {self.pin}')
-
-
     def submit_user(self):
         sql = '''INSERT INTO users 
                     (Account_Number, Card_Number, CVV, Name, PIN, Balance)
