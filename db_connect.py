@@ -13,7 +13,7 @@ def run_once(f):
 
 def connect_db():
     mySQL = connectSQL.connect(
-        host='localhost',
+        host='127.0.0.1',
         user='root',
         password=''
     )
