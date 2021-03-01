@@ -12,7 +12,7 @@ class my_actions:
             balance = cursor.fetchone()
             for x in balance:
                 print(colorama.Fore.YELLOW,
-                    f'[*] Your current Balance is: {x}', colorama.Style.RESET_ALL)
+                    '[*] Your current Balance is: {:,}'.format(x), colorama.Style.RESET_ALL)
                 if x == 0:
                     print('you gotta get a job, mate')
 
@@ -34,7 +34,7 @@ class my_actions:
                     cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}')
                     for result in cursor.fetchone():
                         print(colorama.Fore.GREEN,
-                            f'[*] Successfully Withdrawn amount. Your new Balance is: {result}',
+                            '[*] Successfully Withdrawn amount. Your new Balance is: {:,}'.format(result),
                             colorama.Style.RESET_ALL)
                 elif x == amount:
                     conf_bankrupt = str(input('Are you sure you want to withdraw all balance?(y/n) '))
@@ -45,7 +45,7 @@ class my_actions:
                         cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}')
                         for x in cursor.fetchone():
                             print(colorama.Fore.GREEN,
-                                f'[*] Successfully Withdrawn all Balance. Your current Balance is now: {x}',
+                                '[*] Successfully Withdrawn all Balance. Your current Balance is now: {:,}'.format(x),
                                 colorama.Style.RESET_ALL)
                     else:
                         continue
@@ -61,7 +61,7 @@ class my_actions:
                 cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={conf}') 
                 for result in cursor.fetchone():
                     print(colorama.Fore.GREEN,
-                        f'[*] Successfully Deposited amount. Your new Balance is: {result}',
+                        '[*] Successfully Deposited amount. Your new Balance is: {:,}'.format(result),
                         colorama.Style.RESET_ALL)
 
 

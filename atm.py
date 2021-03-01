@@ -13,7 +13,7 @@ class ATM:
 
     def login(self):
         cursor.execute(f'SELECT Name FROM users WHERE Card_Number={self.card_number}')
-        
+
         for result in cursor.fetchone():
             print(colorama.Fore.GREEN,
                 f'[*] Welcome, {result}!', colorama.Style.RESET_ALL)
@@ -66,24 +66,24 @@ if __name__ == '__main__':
                 colorama.Style.RESET_ALL)
         else:
             cursor.execute(f"SELECT Card_Number FROM users WHERE Card_Number={card}")
-        
-            temp = False    
+
+            temp = False
             if cursor.fetchone():
                 temp = True
                 x =- 1
             else:
                 print(colorama.Fore.RED,
                     f'[!!] {card} does not exist\n', colorama.Style.RESET_ALL)
-        
+
         if temp:
             cursor.execute(f"SELECT Name, PIN FROM users WHERE Card_Number={card}")
             creds = [x for x in cursor.fetchone()]
-            
+
             while temp:
                 code = int(getpass.getpass(f'Please Enter PIN code for {creds[0]}: '))
                 if not len(str(code)) == 6 or code != creds[1]:
                     print(colorama.Fore.RED,
                         '[!!] Your PIN code is incorrect\n', colorama.Style.RESET_ALL)
                 elif code in creds:
-                    temp = False   
+                    temp = False
                     ATM(card, code).login()
