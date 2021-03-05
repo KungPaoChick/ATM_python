@@ -1,5 +1,7 @@
-import db_connect, mysql.connector as connectSQL
-import colorama, getpass, fast_luhn as fl
+import db_connect
+import colorama
+import getpass
+import fast_luhn as fl
 import actions
 
 
