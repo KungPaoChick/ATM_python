@@ -1,5 +1,10 @@
-import colorama, string, fast_luhn as fl
-import db_connect, getpass, random
+import colorama
+import string
+import fast_luhn as fl
+import db_connect
+import getpass
+import random
+
 
 class User:
 
