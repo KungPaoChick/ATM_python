@@ -41,8 +41,7 @@ def options(card, pin):
             data.extend((selection, cursor, mysql, pin))
             if selection == 4:
                 cursor.execute(f'SELECT Name FROM users WHERE Card_Number={card}')
-                results = cursor.fetchone()
-                for result in results:
+                for result in cursor.fetchone():
                     print(colorama.Fore.GREEN,
                     f'\n[*] Goodbye, {result}. And Thank you!\n', colorama.Style.RESET_ALL)
                     quit()
