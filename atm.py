@@ -79,11 +79,17 @@ if __name__ == '__main__':
             cursor.execute(f"SELECT Name, PIN FROM users WHERE Card_Number={card}")
             creds = [x for x in cursor.fetchone()]
 
+            times = 0
             while temp:
                 code = int(getpass.getpass(f'Please Enter PIN code for {creds[0]}: '))
                 if not len(str(code)) == 6 or code != creds[1]:
                     print(colorama.Fore.RED,
                         '[!!] Your PIN code is incorrect\n', colorama.Style.RESET_ALL)
+                    times += 1
+                    if times >= 3:
+                        print(colorama.Fore.RED,
+                            f'[!!] Too many PIN code retries.', colorama.Style.RESET_ALL)
+                        quit()
                 elif code in creds:
                     temp = False
                     ATM(card, code).login()
