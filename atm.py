@@ -5,7 +5,6 @@ import fast_luhn as fl
 import actions
 
 
-#TODO: develop the damn atm
 class ATM:
 
     def __init__(self, card_number, pin):
@@ -47,10 +46,10 @@ def options(card, pin):
                     print(colorama.Fore.GREEN,
                     f'\n[*] Goodbye, {result}. And Thank you!\n', colorama.Style.RESET_ALL)
                     quit()
+            actions.action(data)
         else:
             print(colorama.Fore.RED,
                 '[!!] Something went wrong', colorama.Style.RESET_ALL)
-        actions.action(data)
 
 
 if __name__ == '__main__':
