@@ -9,12 +9,13 @@ class my_actions:
 
         if my_actions().confirm_pin(auth, pin):
             cursor.execute(f'SELECT Balance FROM users WHERE PIN={auth}')
-            balance = cursor.fetchone()
-            for x in balance:
+            for balance in cursor.fetchone():
                 print(colorama.Fore.YELLOW,
-                    '[*] Your current Balance is: {:,}'.format(x), colorama.Style.RESET_ALL)
-                if x == 0:
-                    print('you gotta get a job, mate')
+                    '[*] Your current Balance is: {:,}'.format(balance), colorama.Style.RESET_ALL)
+                if balance == 0:
+                    cursor.execute(f'SELECT Name FROM users WHERE PIN={auth}')
+                    for name in cursor.fetchone():
+                        print(f"You're broke, {name}")
 
 
     def Withdraw(self, amount, cursor, sql, pin):
