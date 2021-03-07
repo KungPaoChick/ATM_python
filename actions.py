@@ -118,8 +118,25 @@ def action(my_data):
     if my_data[0] == 1:
         my_actions().Check_Balance(my_data[1], my_data[3])
     elif my_data[0] == 2:
-        withdraw_amount = int(input('Enter the amount you want to Withdraw: '))
-        my_actions().Withdraw(withdraw_amount, my_data[1], my_data[2], my_data[3])
+        my_data[1].execute(f'SELECT Balance FROM users WHERE PIN={my_data[3]}')
+        for bal in my_data[1].fetchone():
+            if bal == 0:
+                print(colorama.Fore.RED,
+                    f"[!!] You can't Withdraw, your balance is: {bal}",
+                    colorama.Style.RESET_ALL)
+            else:
+                withdraw_amount = int(input('Enter the amount you want to Withdraw: '))
+                if withdraw_amount == 0:
+                    print(colorama.Fore.RED,
+                        f'[!!] {withdraw_amount} is not allowed as a Withdrawal input',
+                        colorama.Style.RESET_ALL)
+                else:
+                    my_actions().Withdraw(withdraw_amount, my_data[1], my_data[2], my_data[3])
     elif my_data[0] == 3:
         deposit_amount = int(input('Enter the amount you want to Deposit: '))
-        my_actions().Deposit(deposit_amount, my_data[1], my_data[2], my_data[3])
+        if deposit_amount == 0:
+            print(colorama.Fore.RED,
+                f'[!!] {deposit_amount} is not allowed as a Deposit input',
+                colorama.Style.RESET_ALL)
+        else:
+            my_actions().Deposit(deposit_amount, my_data[1], my_data[2], my_data[3])
