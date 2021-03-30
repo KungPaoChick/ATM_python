@@ -15,7 +15,8 @@ class my_actions:
                 if balance == 0:
                     cursor.execute(f'SELECT Name FROM users WHERE PIN={auth}')
                     for name in cursor.fetchone():
-                        print(f"You're broke, {name}")
+                        for x in name.split()[:-1]:
+                            print(f"You're broke, {x}")
 
 
     def Withdraw(self, amount, cursor, sql, pin):
@@ -29,7 +30,7 @@ class my_actions:
                     break
             if conf.casefold() == 'y' or conf.casefold() == 'yes':
                 auth = int(getpass('Please Enter PIN code again to confirm: '))
-                
+
                 if my_actions().confirm_pin(auth, pin):
                     cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={auth}')
                     for x in cursor.fetchone():
@@ -59,13 +60,13 @@ class my_actions:
                                         colorama.Style.RESET_ALL)
             elif conf.casefold() == 'n' or conf.casefold() == 'no':
                 print(colorama.Fore.RED,
-                    '[!!] Aborting!', colorama.Style.RESET_ALL)                     
+                    '[!!] Aborting!', colorama.Style.RESET_ALL)
         except ValueError as valerr:
             if not len(conf.casefold()) == 1 or not len(conf.casefold()) == 3:
                 print(colorama.Fore.RED,
                     f'[!!] Input does not match with required length. {valerr}',
                     colorama.Style.RESET_ALL)
-            else:    
+            else:
                 print(colorama.Fore.RED,
                     f'[!!] Invalid answer. {valerr}', colorama.Style.RESET_ALL)
 
@@ -81,12 +82,12 @@ class my_actions:
                     break
             if conf.casefold() == 'y' or conf.casefold() == 'yes':
                 auth = int(getpass('Please Enter PIN code again to confirm: '))
-                
+
                 if my_actions().confirm_pin(auth, pin):
                         cursor.execute(f'UPDATE `users` SET `Balance` = `Balance` + {amount} WHERE `PIN`={auth}')
                         sql.commit()
 
-                        cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={auth}') 
+                        cursor.execute(f'SELECT `Balance` FROM users WHERE PIN={auth}')
                         for result in cursor.fetchone():
                             print(colorama.Fore.GREEN,
                                 '[*] Successfully Deposited amount. Your new Balance is: {:,}'.format(result),
@@ -99,7 +100,7 @@ class my_actions:
                 print(colorama.Fore.RED,
                     f'[!!] Input does not match with required length. {valerr}',
                     colorama.Style.RESET_ALL)
-            else:    
+            else:
                 print(colorama.Fore.RED,
                     f'[!!] Invalid answer. {valerr}', colorama.Style.RESET_ALL)
 
