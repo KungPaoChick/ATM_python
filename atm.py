@@ -3,6 +3,8 @@ import colorama
 import getpass
 import fast_luhn as fl
 import actions
+from base64 import b64decode
+import hashlib
 
 
 class ATM:
@@ -39,7 +41,7 @@ def options(card, pin):
 
         if selection in options:
             print('\n\n\n')
-            data.extend((selection, cursor, mysql, pin))
+            data.extend((selection, cursor, mysql, card, pin))
             if selection == 4:
                 cursor.execute(f'SELECT Name FROM users WHERE Card_Number={card}')
                 for result in cursor.fetchone():
@@ -50,6 +52,21 @@ def options(card, pin):
         else:
             print(colorama.Fore.RED,
                 '[!!] Something went wrong', colorama.Style.RESET_ALL)
+
+
+def verify(pin):
+    cursor.execute(f'SELECT PIN FROM users WHERE Card_Number={card}')
+    for x in cursor.fetchone():
+        print(x)
+        salt_from_pin = x[:88]
+        key_from_pin = x[88:]
+
+        new_key = hashlib.pbkdf2_hmac('sha256', str(pin).encode('utf-8'), b64decode(salt_from_pin.encode('utf-8')), 100000)
+        if b64decode(key_from_pin.encode('utf-8')) == new_key:
+            ATM(card, x).login()
+        else:
+            print(colorama.Fore.RED,
+                  '[!!] Incorrect PIN code', colorama.Style.RESET_ALL)
 
 
 if __name__ == '__main__':
@@ -70,7 +87,7 @@ if __name__ == '__main__':
             temp = False
             if cursor.fetchone():
                 temp = True
-                x =- 1
+                x -= 1
             else:
                 print(colorama.Fore.RED,
                     f'[!!] {card} does not exist\n', colorama.Style.RESET_ALL)
@@ -82,7 +99,7 @@ if __name__ == '__main__':
             times = 0
             while temp:
                 code = int(getpass.getpass(f'Please Enter PIN code for {creds[0]}: '))
-                if not len(str(code)) == 6 or code != creds[1]:
+                if not len(str(code)) == 6:
                     print(colorama.Fore.RED,
                         '[!!] Your PIN code is incorrect\n', colorama.Style.RESET_ALL)
                     times += 1
@@ -90,6 +107,5 @@ if __name__ == '__main__':
                         print(colorama.Fore.RED,
                             f'[!!] Too many PIN code retries.', colorama.Style.RESET_ALL)
                         quit()
-                elif code in creds:
+                elif verify(code) in creds:
                     temp = False
-                    ATM(card, code).login()

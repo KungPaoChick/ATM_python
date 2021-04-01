@@ -51,7 +51,7 @@ def check_table(cursor):
                 `Card_Number` VARCHAR(16) NOT NULL,
                 `CVV` INT(3) NOT NULL,
                 `Name` VARCHAR(50) NOT NULL,
-                `PIN` INT(6) NOT NULL,
+                `PIN`  VARCHAR(150) NOT NULL,
                 `Balance` INT(9),
                 PRIMARY KEY (`Account_Number`));''')
         result = cursor.with_rows

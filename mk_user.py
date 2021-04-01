@@ -4,6 +4,9 @@ import fast_luhn as fl
 import db_connect
 import getpass
 import random
+import os
+import hashlib
+from base64 import b64encode, b64decode
 
 
 class User:
@@ -17,7 +20,7 @@ class User:
 
 
     def submit_user(self):
-        sql = '''INSERT INTO users 
+        sql = '''INSERT INTO users
                     (Account_Number, Card_Number, CVV, Name, PIN, Balance)
                     VALUES(%s,%s,%s,%s,%s,%s)'''
         info = [self.account_number, self.card_number, self.cvv, self.name, self.pin, 0]
@@ -29,7 +32,7 @@ def name_user():
         fname = input('Please enter first name: ')
         lname = input('Please enter last name: ')
         name = f'{fname.capitalize()} {lname.capitalize()}'
-        
+
         for letter in name:
             if letter in [char for char in string.punctuation]:
                 print(colorama.Fore.RED,
@@ -54,6 +57,17 @@ def name_user():
             print(colorama.Fore.RED, '[!!] Abort!', colorama.Style.RESET_ALL)
 
 
+class Encode_PIN:
+
+    def __init__(self, pin):
+        self.pin = pin
+
+    def hash(self):
+        salt = b64encode(os.urandom(64)).decode('utf-8')
+        key = b64encode(hashlib.pbkdf2_hmac('sha256', self.pin.encode(), b64decode(salt.encode('utf-8')), 100000)).decode('utf-8')
+        return salt+key
+
+
 def pin_user():
     print(colorama.Fore.YELLOW,
         'PIN should be at a length of 6 numbers', colorama.Style.RESET_ALL)
@@ -70,7 +84,7 @@ def pin_user():
         else:
             print(colorama.Fore.GREEN,
                 '[*] PIN code has been successfully recorded', colorama.Style.RESET_ALL)
-            return pin
+            return Encode_PIN(pin).hash()
 
 
 def account_number_user():
