@@ -57,7 +57,6 @@ def options(card, pin):
 def verify(pin):
     cursor.execute(f'SELECT PIN FROM users WHERE Card_Number={card}')
     for x in cursor.fetchone():
-        print(x)
         salt_from_pin = x[:88]
         key_from_pin = x[88:]
 
